@@ -73,18 +73,18 @@ public class Bot extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         User member = event.getMessage().getAuthor();
         String memberName = String.format("%s#%s", member.getName(), member.getDiscriminator());
-        String message = event.getMessage().getContentRaw();
+        String content = event.getMessage().getContentRaw();
         List<Emote> customEmoji = event.getMessage().getEmotes();
         for(Emote emoji : customEmoji) {
-                message.replace(String.format("<:%s:%s>", emoji.getName(), emoji.getId()), String.format(":%s:", emoji.getName()));
+                content.replace(String.format("<:%s:%s>", emoji.getName(), emoji.getId()), String.format(":%s:", emoji.getName()));
         } 
 
         if(member == null || member.isBot() || message.startsWith(".") || event.getChannel() != channel) {
             return;
         }
 
-        if(message.length() >= 1) {
-            Bukkit.broadcastMessage(String.format("%s[Discord] %s:%s%s", ChatColor.AQUA, memberName, ChatColor.RESET, message));
+        if(content.length() >= 1) {
+            Bukkit.broadcastMessage(String.format("%s[Discord] %s:%s%s", ChatColor.AQUA, memberName, ChatColor.RESET, content));
         }
     }
 }
