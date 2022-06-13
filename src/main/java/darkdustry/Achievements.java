@@ -15,6 +15,11 @@ public class Achievements implements Listener {
     @EventHandler
     void onAchievement(PlayerAdvancementDoneEvent event) {
         String achievementName = event.getAdvancement().getKey().getKey();
+
+        if (achievementName.split("/")[0].contains("recipes")) {
+            return;
+        }
+
         Bot.message(String.format("**%s** получил достижение **%s**", event.getPlayer().getName(), achievementName));
     }
 }
