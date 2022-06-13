@@ -3,7 +3,7 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = 15
+sourceCompatibility = 16
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -19,12 +19,16 @@ repositories {
 ext {
     spigot_version = '1.16.4-R0.1-SNAPSHOT'
     jda_version = '5.0.0-alpha.11'
-    mindustry_version = 'v135'
 }
 
 dependencies {
     implementation "org.spigotmc:spigot-api:$spigot_version"
     implementation "net.dv8tion:JDA:$jda_version"
+
+    implementation "org.jsoup:jsoup:1.7.2"
+    implementation "com.github.stleary:JSON-Java:20210307"
+    implementation "net.sf.trove4j:trove4j:3.0.3"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.11.1"
 }
 
 jar {
