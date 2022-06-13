@@ -8,6 +8,8 @@ import java.util.Properties;
 
 public class Achievements implements Listener {
 
+    // TODO, позже я сделаю локализированные на русский достижения
+
     Properties bundles = new Properties();
 
     @EventHandler
