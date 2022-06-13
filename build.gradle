@@ -17,7 +17,7 @@ repositories {
 }
 
 ext {
-    spigot_version = '1.16.2-R0.1-SNAPSHOT'
+    spigot_version = '1.16.4-R0.1-SNAPSHOT'
     jda_version = '5.0.0-alpha.11'
     mindustry_version = 'v135'
 }
