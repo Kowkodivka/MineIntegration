@@ -81,7 +81,7 @@ public class Bot extends ListenerAdapter {
                 content.replace(String.format("<:%s:%s>", emoji.getName(), emoji.getId()), String.format(":%s:", emoji.getName()));
         } 
 
-        if(member == null || member.isBot() || message.startsWith(".") || event.getChannel() != channel) {
+        if(member == null || member.isBot() || content.startsWith(".") || event.getChannel() != channel) {
             return;
         }
 
