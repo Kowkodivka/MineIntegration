@@ -108,7 +108,7 @@ public class Bot extends ListenerAdapter {
         String content = event.getMessage().getContentRaw();
         List<Emote> customEmoji = event.getMessage().getEmotes();
         for(Emote emoji : customEmoji) {
-                content.replace(String.format("<:%s:%s>", emoji.getName(), emoji.getId()), String.format(":%s:", emoji.getName()));
+            content.replace((emoji.isAnimated() ? "<a:" : "<:") + emoji.getName() + ":" + emoji.getId() + ">", ":" + emoji.getName() + ":");
         } 
 
         if(member == null || member.isBot() || content.startsWith(".") || event.getChannel() != channel) {
