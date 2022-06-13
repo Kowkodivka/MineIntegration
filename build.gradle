@@ -3,7 +3,7 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = 16
+sourceCompatibility = 15
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
