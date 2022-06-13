@@ -10,24 +10,24 @@ public class Handler implements Listener {
 
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent event) {
-        Bot.message(String.format(":small_red_triangle: **%s** заскакивает на сервер!", event.getPlayer().getName()));
+        Bot.message(String.format(":small_red_triangle: **%s** зашёл на сервер!", event.getPlayer().getName()));
         Bot.updateStatus();
     }
 
     @EventHandler
     void onPlayerKick(PlayerKickEvent event) {
-        Bot.message(String.format("**%s** был выгнан по причине: \"%s\"", event.getPlayer().getName(), event.getReason()));
+        Bot.message(String.format("**%s** выгнан потому что: \"%s\"", event.getPlayer().getName(), event.getReason()));
     }
 
     @EventHandler
     void onPlayerQuit(PlayerQuitEvent event) {
-        Bot.message(String.format(":small_red_triangle_down: **%s** выходит с сервера", event.getPlayer().getName()));
+        Bot.message(String.format(":small_red_triangle_down: **%s** вышел с сервера", event.getPlayer().getName()));
         Bot.updateStatus();
     }
 
     @EventHandler
     void onMessage(AsyncPlayerChatEvent event) {
-        Bot.message(String.format("**%s**: %s", event.getPlayer().getName(), event.getMessage()));
+        Bot.message(String.format("<**%s**> %s", event.getPlayer().getName(), event.getMessage()));
     }
 
     @EventHandler
