@@ -74,6 +74,12 @@ public class Bot extends ListenerAdapter {
         User member = event.getMessage().getAuthor();
         String memberName = String.format("%s#%s", member.getName(), member.getDiscriminator());
         String message = event.getMessage().getContentRaw();
+        List<String> customEmoji = message.getEmotes().stream()
+                .map((emote) -> emote.getName() + ":" + emote.getId())
+                .collect(Collectors.toList());
+        for(String emoji : customEmoji) {
+                message.replace(String.format("<:%s>", emoji), String.format(":%s:", emoji.substring(0, emoji.indexOf(":"))));
+        } 
 
         if(member == null || member.isBot() || message.startsWith(".") || event.getChannel() != channel) {
             return;
