@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+=name: Java CI with Gradle
 
 on: [push, workflow_dispatch]
 
@@ -21,7 +21,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew -Dorg.gradle.daemon=false
+      run: ./gradlew jar -Dorg.gradle.daemon=false
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
