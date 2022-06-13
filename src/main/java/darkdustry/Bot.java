@@ -5,17 +5,19 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.AllowedMentions;
 import net.dv8tion.jda.internal.entities.EntityBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Bot extends ListenerAdapter {
 
@@ -38,6 +40,8 @@ public class Bot extends ListenerAdapter {
             guild = jda.getGuildById(guildId);
             guild.getSelfMember().modifyNickname("[/] " + jda.getSelfUser().getName()).queue();
 
+            registerSlashCommands();
+
             channel = guild.getTextChannelById(channelId);
 
             AllowedMentions.setDefaultMentions(EnumSet.noneOf(Message.MentionType.class));
@@ -46,14 +50,17 @@ public class Bot extends ListenerAdapter {
         }
     }
 
+    public static void registerSlashCommands() {
+        guild.upsertCommand("online", "Список игроков на сервере.").queue();
+    }
+
     public static void updateStatus() {
         jda.getPresence().setActivity(EntityBuilder.createActivity(Bukkit.getOnlinePlayers().size() + " игроков онлайн | IP: darkdustry.ml", null, Activity.ActivityType.WATCHING));
     }
 
-    public static void notify(String title, int color) {
+    public static void notify(String title) {
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle(title)
-                .setColor(color)
                 .build();
 
         channel.sendMessageEmbeds(embed).queue();
@@ -69,6 +76,29 @@ public class Bot extends ListenerAdapter {
 
     public static void shutdown() {
         jda.shutdown();
+    }
+
+    @Override
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
+        switch (event.getName().toLowerCase()) {
+
+            case "online" -> {
+                StringBuilder players = new StringBuilder();
+
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    players.append("**").append(p.getDisplayName()).append("**").append("\n");
+                }
+
+                if (players.toString().trim().length() < 1) {
+                    event.reply("Сервер пуст.").setEphemeral(true).queue();
+                } else {
+                    event.reply(String.format("Игроки: \n%s", players.toString().trim())).queue();
+                }
+            }
+
+
+
+        }
     }
 
     @Override
