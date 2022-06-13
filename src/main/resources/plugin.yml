@@ -1,0 +1,5 @@
+name: MineIntegration
+version: 1.0
+main: darkdustry.Plugin
+api-version: '1.18'
+author: Darkdustry Organization
