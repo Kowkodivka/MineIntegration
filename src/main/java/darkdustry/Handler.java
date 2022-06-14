@@ -16,7 +16,7 @@ public class Handler implements Listener {
 
     @EventHandler
     void onPlayerKick(PlayerKickEvent event) {
-        Bot.message(String.format("**%s** выгнан потому что: \"%s\"", event.getPlayer().getName(), event.getReason()));
+        Bot.message(String.format("**%s** выгнан по причине: \"%s\"", event.getPlayer().getName(), event.getReason()));
     }
 
     @EventHandler

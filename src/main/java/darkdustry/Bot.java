@@ -1,13 +1,11 @@
 package darkdustry;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.utils.AllowedMentions;
 import net.dv8tion.jda.internal.entities.EntityBuilder;
 import org.bukkit.Bukkit;
@@ -15,7 +13,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -24,10 +21,13 @@ public class Bot extends ListenerAdapter {
     private static final String token = "OTc1MDg4NzEwMDEyMDAyMzk3.GtdA4H.aE7PtsdRZsAhlrVXEMT5APGb2DFYh6xqmkUa_s";
     private static final long channelId = 983841073841442816L;
     private static final long guildId = 810758118442663936L;
+    private static final long adminRoleId = 985118305725608006L;
 
     public static JDA jda;
     private static Guild guild;
     private static TextChannel channel;
+
+    private static Role adminRole;
     
     public static void init() {
         try {
@@ -43,6 +43,7 @@ public class Bot extends ListenerAdapter {
             registerSlashCommands();
 
             channel = guild.getTextChannelById(channelId);
+            adminRole = guild.getRoleById(adminRoleId);
 
             AllowedMentions.setDefaultMentions(EnumSet.noneOf(Message.MentionType.class));
         } catch (Exception e) {
@@ -51,7 +52,13 @@ public class Bot extends ListenerAdapter {
     }
 
     public static void registerSlashCommands() {
-        guild.upsertCommand("online", "Список игроков на сервере.").queue();
+        guild.upsertCommand("online", "Список игроков на сервере.")
+                .queue();
+
+        guild.upsertCommand("kick", "Выгоняет игрока с сервера.")
+                .addOption(OptionType.STRING, "kick-player", "Игрок, который будет выгнан.")
+                .addOption(OptionType.STRING, "kick-reason", "Причина, с которой будет выгнан игрок.")
+                .queue();
     }
 
     public static void updateStatus() {
@@ -96,7 +103,24 @@ public class Bot extends ListenerAdapter {
                 }
             }
 
+            case "kick" -> {
+                if (event.getMember().getRoles().contains(adminRole)) {
+                    String name = event.getOptionsByName("kick-player").toString();
+                    String reason = event.getOptionsByName("kick-reason").toString();
+                    Player player = Bukkit.getPlayer(name);
 
+                    if (reason == null) {
+                        reason = "<не указано>";
+                    }
+
+                    try {
+                        player.kickPlayer(reason);
+                        event.reply(String.format("**%s** был выгнан.", player.getDisplayName())).setEphemeral(true).queue();
+                    } catch (Exception e) {
+                        event.reply(String.format("Не удалось выгнать игрока:\n%s", e)).setEphemeral(true).queue();
+                    }
+                } else event.reply("У вас нет прав на использование данной команды.").setEphemeral(true).queue();
+            }
 
         }
     }

@@ -20,8 +20,6 @@ public class Achievements implements Listener {
             return;
         }
 
-        if (bundles.contains(achievementName)) {
-            Bot.message(String.format("**%s** получил достижение **%s**", event.getPlayer().getName(), bundles.get(achievementName)));
-        } else Bot.message(String.format("**%s** получил достижение **%s**", event.getPlayer().getName(), achievementName));
+        Bot.message(String.format("**%s** получил достижение **%s**", event.getPlayer().getName(), bundles.getOrDefault(achievementName, achievementName)));
     }
 }
