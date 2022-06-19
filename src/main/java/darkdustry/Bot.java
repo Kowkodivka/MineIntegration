@@ -1,13 +1,15 @@
 package darkdustry;
 
+import darkdustry.commands.KickCommand;
+import darkdustry.commands.OnlineCommand;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.utils.AllowedMentions;
 import net.dv8tion.jda.internal.entities.EntityBuilder;
+import nullrefexc.gen.SlashCommandListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 import java.util.List;
+
+import static nullrefexc.gen.SlashCommandListener.registerSlashCommands;
 
 public class Bot extends ListenerAdapter {
 
@@ -24,45 +28,30 @@ public class Bot extends ListenerAdapter {
     private static final long adminRoleId = 985118305725608006L;
 
     public static JDA jda;
-    private static Guild guild;
     private static TextChannel channel;
-
-    private static Role adminRole;
+    public static Role adminRole;
+    public static final int timeoutCommand = 5;
     
     public static void init() {
         try {
             jda = JDABuilder.createDefault(token)
                     .setActivity(EntityBuilder.createActivity("Сервер запущен | IP: darkdustry.ml", null, Activity.ActivityType.WATCHING))
-                    .addEventListeners(new Bot())
+                    .addEventListeners(new Bot(), new SlashCommandListener(), new OnlineCommand())
                     .build()
                     .awaitReady();
 
-            guild = jda.getGuildById(guildId);
+            Guild guild = jda.getGuildById(guildId);
             guild.getSelfMember().modifyNickname("[/] " + jda.getSelfUser().getName()).queue();
-
-            registerSlashCommands();
 
             channel = guild.getTextChannelById(channelId);
             adminRole = guild.getRoleById(adminRoleId);
+
+            registerSlashCommands(guild);
 
             AllowedMentions.setDefaultMentions(EnumSet.noneOf(Message.MentionType.class));
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void registerSlashCommands() {
-        guild.upsertCommand("online", "Список игроков на сервере.")
-                .queue();
-
-        guild.upsertCommand("kick", "Выгоняет игрока с сервера.")
-                .addOption(OptionType.STRING, "kick-player", "Игрок, который будет выгнан.")
-                .addOption(OptionType.STRING, "kick-reason", "Причина, с которой будет выгнан игрок.")
-                .queue();
-    }
-
-    public static void updateStatus() {
-        jda.getPresence().setActivity(EntityBuilder.createActivity(Bukkit.getOnlinePlayers().size() + " игроков онлайн | IP: darkdustry.ml", null, Activity.ActivityType.WATCHING));
     }
 
     public static void notify(String title) {
@@ -83,46 +72,6 @@ public class Bot extends ListenerAdapter {
 
     public static void shutdown() {
         jda.shutdown();
-    }
-
-    @Override
-    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        switch (event.getName().toLowerCase()) {
-
-            case "online" -> {
-                StringBuilder players = new StringBuilder();
-
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    players.append("**").append(p.getDisplayName()).append("**").append("\n");
-                }
-
-                if (players.toString().trim().length() < 1) {
-                    event.reply("Сервер пуст.").setEphemeral(true).queue();
-                } else {
-                    event.reply(String.format("Игроки: \n%s", players.toString().trim())).queue();
-                }
-            }
-
-            case "kick" -> {
-                if (event.getMember().getRoles().contains(adminRole)) {
-                    String name = event.getOptionsByName("kick-player").toString();
-                    String reason = event.getOptionsByName("kick-reason").toString();
-                    Player player = Bukkit.getPlayer(name);
-
-                    if (reason == null) {
-                        reason = "<не указано>";
-                    }
-
-                    try {
-                        player.kickPlayer(reason);
-                        event.reply(String.format("**%s** был выгнан.", player.getDisplayName())).setEphemeral(true).queue();
-                    } catch (Exception e) {
-                        event.reply(String.format("Не удалось выгнать игрока:\n%s", e)).setEphemeral(true).queue();
-                    }
-                } else event.reply("У вас нет прав на использование данной команды.").setEphemeral(true).queue();
-            }
-
-        }
     }
 
     @Override

@@ -11,7 +11,6 @@ public class Handler implements Listener {
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent event) {
         Bot.message(String.format(":small_red_triangle: **%s** зашёл на сервер!", event.getPlayer().getName()));
-        Bot.updateStatus();
     }
 
     @EventHandler
@@ -22,7 +21,6 @@ public class Handler implements Listener {
     @EventHandler
     void onPlayerQuit(PlayerQuitEvent event) {
         Bot.message(String.format(":small_red_triangle_down: **%s** вышел с сервера", event.getPlayer().getName()));
-        Bot.updateStatus();
     }
 
     @EventHandler

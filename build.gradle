@@ -1,5 +1,4 @@
 plugins {
-    id 'idea'
     id 'java'
 }
 
@@ -22,13 +21,21 @@ ext {
 }
 
 dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation 'com.squareup:javapoet:1.13.0'
     implementation "org.spigotmc:spigot-api:$spigot_version"
     implementation "net.dv8tion:JDA:$jda_version"
+    implementation 'org.slf4j:slf4j-nop:1.7.36'
 
     implementation "org.jsoup:jsoup:1.7.2"
     implementation "com.github.stleary:JSON-Java:20210307"
     implementation "net.sf.trove4j:trove4j:3.0.3"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.11.1"
+
+    compileOnly project(":annotations")
+    annotationProcessor project(":annotations")
 }
 
 jar {
