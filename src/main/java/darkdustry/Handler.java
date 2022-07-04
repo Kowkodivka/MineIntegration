@@ -113,7 +113,7 @@ public class Handler implements Listener {
             }
 
             if (!msg.isEmpty()) {
-                Bot.message(msg)
+                Bot.message(msg);
             }
         }
     }
