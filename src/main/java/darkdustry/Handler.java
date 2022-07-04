@@ -112,4 +112,16 @@ public class Handler implements Listener {
                 Bot.message(msg);
             }
     }
+
+    public static String getNameFromLivingEntity(LivingEntity livingEntity) {
+        String name = "";
+
+        if (livingEntity instanceof Player) {
+            name = ((Player) livingEntity).getDisplayName();
+        } else {
+            name = livingEntity.toString().substring(5);
+        }
+
+        return name;
+    }
 }
