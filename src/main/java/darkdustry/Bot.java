@@ -62,6 +62,10 @@ public class Bot extends ListenerAdapter {
         channel.sendMessageEmbeds(embed).queue();
     }
 
+    public static void updateStatus() {
+        jda.getPresence().setActivity(EntityBuilder.createActivity(Bukkit.getOnlinePlayers().size() + " игроков онлайн | IP: darkdustry.ml", null, Activity.ActivityType.WATCHING));
+    }
+    
     public static void message(String text) {
         Message msg = new MessageBuilder()
                 .append(text)
