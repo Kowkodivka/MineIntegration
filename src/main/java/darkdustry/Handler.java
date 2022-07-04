@@ -15,7 +15,8 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.Location.*;
+import org.bukkit.Location;
+import org.bukkit.World;
 
 @SuppressWarnings("unused")
 public class Handler implements Listener {
