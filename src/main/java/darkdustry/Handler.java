@@ -15,7 +15,6 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 @SuppressWarnings("unused")
 public class Handler implements Listener {
@@ -44,10 +43,9 @@ public class Handler implements Listener {
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityDeath(EntityDeathEvent event) {
+    public void onPlayerDeath(PlayerDeathEvent event) {
         String msg = "";
 
-        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             String name = player.getDisplayName();
 
@@ -60,9 +58,7 @@ public class Handler implements Listener {
                     Entity damager = lastDamageByEntityEvent.getDamager();
 
                     if (damager instanceof Arrow) {
-                        Arrow arrow = (Arrow) damager;
-
-                        msg = name + " был застрелен " + getNameFromLivingEntity(arrow.getShooter());
+                        msg = name + " был застрелен";
                     } else if (cause.equals(DamageCause.ENTITY_EXPLOSION)) {
                         msg = name + " взорвался";
                     } else if (damager instanceof LivingEntity) {
@@ -115,19 +111,5 @@ public class Handler implements Listener {
             if (!msg.isEmpty()) {
                 Bot.message(msg);
             }
-        }
     }
-
-    public static String getNameFromLivingEntity(LivingEntity livingEntity) {
-        String name = "";
-
-        if (livingEntity instanceof Player) {
-            name = ((Player) livingEntity).getDisplayName();
-        } else {
-            name = livingEntity.toString().substring(5);
-        }
-
-        return name;
-    }
-
 }
