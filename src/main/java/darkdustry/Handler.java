@@ -129,6 +129,6 @@ public class Handler implements Listener {
 
     @EventHandler
     void onWorldChange(PlayerPortalEvent event){
-        Bot.message(String.format(":globe_with_meredians: **%s** переносится в **%s**", event.getPlayer().getDisplayName(), event.getPlayer().getTo().getWorld().getName()));
+        Bot.message(String.format(":globe_with_meredians: **%s** переносится в **%s**", event.getPlayer().getDisplayName(), event.getTo().getWorld().getName()));
     }
 }
