@@ -1,8 +1,5 @@
-package com.djdch.bukkit.deathlog.listener;
+package darkdustry;
 
-import java.util.logging.Logger;
-
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
@@ -25,9 +22,8 @@ import com.djdch.bukkit.deathlog.DeathLog;
  * 
  * @author DjDCH
  */
+//кто не понял, это писал не я, я сделал только перевод
 public class DeathListener implements Listener {
-
-    protected final Logger logger;
 
     public DeathListener(DeathLog deathlog) {
         this.logger = deathlog.getPluginLogger();
@@ -52,15 +48,15 @@ public class DeathListener implements Listener {
                     if (damager instanceof Arrow) {
                         Arrow arrow = (Arrow) damager;
 
-                        msg = name + " was shot by " + getNameFromLivingEntity(arrow.getShooter());
+                        msg = name + " был застрелен " + getNameFromLivingEntity(arrow.getShooter());
                     } else if (cause.equals(DamageCause.ENTITY_EXPLOSION)) {
-                        msg = name + " blew up";
+                        msg = name + " взорвался";
                     } else if (damager instanceof LivingEntity) {
                         LivingEntity livingEntity = (LivingEntity) damager;
 
-                        msg = name + " was slain by " + getNameFromLivingEntity(livingEntity);
+                        msg = name + " был убит " + getNameFromLivingEntity(livingEntity);
                     } else {
-                        msg = name + " died 'EntityDamageByEntityEvent'";
+                        msg = name + " умер 'EntityDamageByEntityEvent'";
                     }
                 } else if (lastDamageEvent instanceof EntityDamageByBlockEvent) {
                     EntityDamageByBlockEvent lastDamageByBlockEvent = (EntityDamageByBlockEvent) lastDamageEvent;
@@ -68,44 +64,42 @@ public class DeathListener implements Listener {
 
                     if (cause.equals(DamageCause.CONTACT)) {
                         if (damager.getType() == Material.CACTUS) {
-                            msg = name + " was pricked to death";
+                            msg = name + " заколот до смерти";
                         } else {
-                            msg = name + " died 'CONTACT','EntityDamageByBlockEvent'";
+                            msg = name + " умер 'CONTACT','EntityDamageByBlockEvent'";
                         }
                     } else if (cause.equals(DamageCause.LAVA)) {
-                        msg = name + " tried to swim in lava";
+                        msg = name + " хотел поплавать в лаве";
                     } else if (cause.equals(DamageCause.VOID)) {
-                        msg = name + " fell out of the world";
+                        msg = name + " выпал из мира";
                     } else {
-                        msg = name + " died 'EntityDamageByBlockEvent'";
+                        msg = name + " умер 'EntityDamageByBlockEvent'";
                     }
                 } else {
                     if (cause.equals(DamageCause.FIRE)) {
-                        msg = name + " went up in flames";
+                        msg = name + " сгорел";
                     } else if (cause.equals(DamageCause.FIRE_TICK)) {
-                        msg = name + " burned to death";
+                        msg = name + " сгорел до тла";
                     } else if (cause.equals(DamageCause.SUFFOCATION)) {
-                        msg = name + " suffocated in a wall";
+                        msg = name + " похоронен в стене";
                     } else if (cause.equals(DamageCause.DROWNING)) {
-                        msg = name + " drowned";
+                        msg = name + " утонул";
                     } else if (cause.equals(DamageCause.STARVATION)) {
-                        msg = name + " starved to death";
+                        msg = name + " забыл поесть";
                     } else if (cause.equals(DamageCause.FALL)) {
-                        msg = name + " hit the ground too hard";
+                        msg = name + " ударился об землю слишком сильно";
                     } else if (cause.equals(DamageCause.MAGIC)) {
-                        msg = name + " was killed by magic";
+                        msg = name + " убит магией";
                     } else {
-                        msg = name + " died 'EntityDamageEvent'";
+                        msg = name + " умер 'EntityDamageEvent'";
                     }
                 }
             } else {
-                msg = name + " died";
+                msg = name + " умер при неизместных обстоятельствах";
             }
 
             if (!msg.isEmpty()) {
-                Location location = player.getLocation();
-
-                this.logger.info(msg + " ([" + location.getWorld().getName() + "] " + ((int) location.getX()) + ", " + ((int) location.getY()) + ", " + ((int) location.getZ()) + ")");
+                Bot.message(msg)
             }
         }
     }
