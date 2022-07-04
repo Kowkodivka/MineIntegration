@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.Location.*;
 
 @SuppressWarnings("unused")
 public class Handler implements Listener {
@@ -58,15 +59,15 @@ public class Handler implements Listener {
                     Entity damager = lastDamageByEntityEvent.getDamager();
 
                     if (damager instanceof Arrow) {
-                        msg = name + " был застрелен";
+                        msg = name + " застрелен";
                     } else if (cause.equals(DamageCause.ENTITY_EXPLOSION)) {
-                        msg = name + " взорвался";
+                        msg = name + " подорвался";
                     } else if (damager instanceof LivingEntity) {
                         LivingEntity livingEntity = (LivingEntity) damager;
 
-                        msg = name + " был убит " + getNameFromLivingEntity(livingEntity);
+                        msg = name + " убит " + getNameFromLivingEntity(livingEntity);
                     } else {
-                        msg = name + " умер 'EntityDamageByEntityEvent'";
+                        msg = name + " умер от неизвестной энтити";
                     }
                 } else if (lastDamageEvent instanceof EntityDamageByBlockEvent) {
                     EntityDamageByBlockEvent lastDamageByBlockEvent = (EntityDamageByBlockEvent) lastDamageEvent;
@@ -74,16 +75,16 @@ public class Handler implements Listener {
 
                     if (cause.equals(DamageCause.CONTACT)) {
                         if (damager.getType() == Material.CACTUS) {
-                            msg = name + " заколот до смерти";
+                            msg = name + " понял что кактус делает больно";
                         } else {
-                            msg = name + " умер 'CONTACT','EntityDamageByBlockEvent'";
+                            msg = name + " умер от контакта с блоком";
                         }
                     } else if (cause.equals(DamageCause.LAVA)) {
                         msg = name + " хотел поплавать в лаве";
                     } else if (cause.equals(DamageCause.VOID)) {
-                        msg = name + " выпал из мира";
+                        msg = name + " выпал из жизни";
                     } else {
-                        msg = name + " умер 'EntityDamageByBlockEvent'";
+                        msg = name + " умер от блока";
                     }
                 } else {
                     if (cause.equals(DamageCause.FIRE)) {
@@ -91,17 +92,17 @@ public class Handler implements Listener {
                     } else if (cause.equals(DamageCause.FIRE_TICK)) {
                         msg = name + " сгорел до тла";
                     } else if (cause.equals(DamageCause.SUFFOCATION)) {
-                        msg = name + " похоронен в стене";
+                        msg = name + " похоронен в блоках";
                     } else if (cause.equals(DamageCause.DROWNING)) {
-                        msg = name + " утонул";
+                        msg = name + " не всплыл вовремя";
                     } else if (cause.equals(DamageCause.STARVATION)) {
                         msg = name + " забыл поесть";
                     } else if (cause.equals(DamageCause.FALL)) {
                         msg = name + " ударился об землю слишком сильно";
                     } else if (cause.equals(DamageCause.MAGIC)) {
-                        msg = name + " убит магией";
+                        msg = name + " магически умер";
                     } else {
-                        msg = name + " умер 'EntityDamageEvent'";
+                        msg = name + " умер от самого себя";
                     }
                 }
             } else {
@@ -123,5 +124,10 @@ public class Handler implements Listener {
         }
 
         return name;
+    }
+
+    @EventHandler
+    void onWorldChange(PlayerPortalEvent event){
+        Bot.message(String.format(":globe_with_meredians: **%s** переносится в **%s**", event.getPlayer().getDisplayName(), event.getPlayer().getTo().getWorld().getName()))
     }
 }
