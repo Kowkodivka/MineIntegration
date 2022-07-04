@@ -15,8 +15,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.djdch.bukkit.deathlog.DeathLog;
-
 /**
  * Class who listen for any player death.
  * 
@@ -24,10 +22,6 @@ import com.djdch.bukkit.deathlog.DeathLog;
  */
 //кто не понял, это писал не я, я сделал только перевод
 public class DeathListener implements Listener {
-
-    public DeathListener(DeathLog deathlog) {
-        this.logger = deathlog.getPluginLogger();
-    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
