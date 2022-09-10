@@ -22,7 +22,7 @@ import static nullrefexc.gen.SlashCommandListener.registerSlashCommands;
 
 public class Bot extends ListenerAdapter {
 
-    private static final String token = "OTc1MDg4NzEwMDEyMDAyMzk3.GtdA4H.aE7PtsdRZsAhlrVXEMT5APGb2DFYh6xqmkUa_s";
+    private static final String token = "token"; // The old token has expired
     private static final long channelId = 983841073841442816L;
     private static final long guildId = 810758118442663936L;
     private static final long adminRoleId = 985118305725608006L;
